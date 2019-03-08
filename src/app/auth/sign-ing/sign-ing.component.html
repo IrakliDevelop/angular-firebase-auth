@@ -2,7 +2,7 @@
   <h1>Sign In Form</h1>
 <div class="row">
   <div class="col-md-6">
-    <form [formGroup]="signinForm" (ngSubmit)="signin()">
+    <form [formGroup]="signInForm" (ngSubmit)="signin()">
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
@@ -16,7 +16,7 @@
           <div class="form-group">
             <input type="password" formControlName="pass" class="form-control" placeholder="Password">
           </div>
-          <p class="help-block" *ngIf="!signInForm.get('pass').valid && signinForm.get('pass').touched">Please enter passworld.</p>      
+          <p class="help-block" *ngIf="!signInForm.get('pass').valid && signInForm.get('pass').touched">Please enter passworld.</p>      
         </div>
       </div>
       <div class="row pull-right">

@@ -7,7 +7,7 @@
 <div class="container">
   <div class="row">
   <div class="col-md-12">
-    <div class="row pull-right" *ngIf="!checkUserLoggedIn()">
+    <div class="row pull-right" *ngIf="!isLoggedIn()">
       <span routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" >
           <a href="#" 
               routerLink="/sign-in">Sign-in</a> |
@@ -17,7 +17,7 @@
           routerLink="/sign-up">Sign-up</a>
       </span>
     </div>
-    <div class="row pull-right" *ngIf="checkUserLoggedIn()">
+    <div class="row pull-right" *ngIf="isLoggedIn()">
         <a href="#" routerLink="/home">Home</a> |
         <a href="#" (click)="onLogout()">Logout</a>
     </div>

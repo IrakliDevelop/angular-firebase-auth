@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class SignIngComponent implements OnInit {
 
+  title = 'Cool App';
   signInForm: FormGroup;
 
   constructor(
