@@ -31,9 +31,8 @@ export class AuthService {
   }
 
   logout() {
-    firebase.auth().signOut();
-
     localStorage.removeItem('isLoggedIn');
+    firebase.auth().signOut();
   }
 
   getCurrentUserToken() {

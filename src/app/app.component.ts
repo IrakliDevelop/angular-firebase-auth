@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     }
 
     onLogout() {
-
+      localStorage.removeItem('isLoggedIn');
     }
 
     isLoggedIn() {
