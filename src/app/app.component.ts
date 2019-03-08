@@ -1,10 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import * as firebase from 'firebase';
+import { AuthService } from './services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'angular-firebase-auth';
+export class AppComponent implements OnInit {
+  title: 'Cool App';
+  token: string;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+    ) { }
+
+    ngOnInit() {
+      firebase.initializeApp({
+        apiKey: 'AIzaSyANJ7ISPlNQhicGJquaHk2oRCJyLxp6F3M',
+        authDomain: 'authdemo-87a43.firebaseapp.com',
+      });
+    }
+
+    onLogout() {
+
+    }
+
+    isLoggedIn() {
+      return localStorage.getItem('isLoggedIn') ? true : false;
+    }
 }
