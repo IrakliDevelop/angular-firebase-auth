@@ -17,7 +17,7 @@ export class SignIngComponent implements OnInit {
 
   ngOnInit() {
     this.signInForm = new FormGroup({
-      email: new FormControl(null,Validators.required),
+      email: new FormControl(null, Validators.required),
       pass: new FormControl(null, Validators.required),
     });
   }

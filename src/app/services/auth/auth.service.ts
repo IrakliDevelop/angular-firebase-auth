@@ -11,15 +11,15 @@ export class AuthService {
     private router: Router
   ) { }
 
-  signUp(email: string, password: string){
+  signUp(email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
                     .then( res => {
-                      console.log('successfull sign up')
+                      console.log('successfull sign up');
                     },
                     error => console.log);
   }
 
-  signIn(email: string, password: string){
+  signIn(email: string, password: string) {
     firebase.auth().signInWithEmailAndPassword(email, password)
                     .then(
                       res => {
@@ -30,7 +30,7 @@ export class AuthService {
                     );
   }
 
-  logout(){
+  logout() {
     firebase.auth().signOut();
 
     localStorage.removeItem('isLoggedIn');
@@ -46,7 +46,7 @@ export class AuthService {
     localStorage.getItem('isLoggedIn');
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     return (localStorage.getItem('isLoggedIn')) ? true : false;
   }
 }
