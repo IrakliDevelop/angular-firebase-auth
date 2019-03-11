@@ -32,10 +32,10 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('accessToken');
     firebase.auth().signOut().then(res => {
       console.log(res);
     }, error => console.log(error));
+    localStorage.removeItem('accessToken');
   }
 
   getCurrentUserToken() {
@@ -49,6 +49,6 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return (localStorage.getItem('accessToken')) ? true : false;
+    return !!(localStorage.getItem('accessToken'));
   }
 }

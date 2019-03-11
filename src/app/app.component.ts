@@ -16,17 +16,19 @@ export class AppComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router
-    ) { }
+  ) {
+  }
 
-    ngOnInit() {
-      firebase.initializeApp(credentials);
-    }
+  ngOnInit() {
+    console.log(credentials);
+    firebase.initializeApp(credentials);
+  }
 
-    onLogout() {
-      localStorage.removeItem('accessToken');
-    }
+  onLogout() {
+    this.authService.logout();
+  }
 
-    isLoggedIn() {
-      return localStorage.getItem('accessToken');
-    }
+  isLoggedIn() {
+    return localStorage.getItem('accessToken');
+  }
 }

@@ -47,4 +47,4 @@ Thumbs.db
 
 
 #config
-credentials.js
+src/app/config
