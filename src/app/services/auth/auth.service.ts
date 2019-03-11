@@ -58,7 +58,7 @@ export class AuthService {
   // TODO: implement
   refresh() {
     if (this.isAuthenticated()) {
-      if (this.helper.getTokenExpirationDate() <= (new Date()).getMilliseconds() + 300000 /* 5 minutes*/) {
+      if (this.helper.getTokenExpirationDate().getMilliseconds() <= (new Date()).getMilliseconds() + 300000 /* 5 minutes*/) {
         this.getCurrentUserToken();
       }
     }
