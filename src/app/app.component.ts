@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { AuthService } from './services/auth/auth.service';
 import { Router } from '@angular/router';
+import * as credentials from './config/credentials';
 
 @Component({
   selector: 'app-root',
@@ -18,21 +19,14 @@ export class AppComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-      firebase.initializeApp({
-        apiKey: '',
-        authDomain: '',
-        databaseURL: '',
-        projectId: '',
-        storageBucket: '',
-        messagingSenderId: ''
-      });
+      firebase.initializeApp(credentials);
     }
 
     onLogout() {
-      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('accessToken');
     }
 
     isLoggedIn() {
-      return localStorage.getItem('isLoggedIn') ? true : false;
+      return localStorage.getItem('accessToken');
     }
 }
