@@ -69,7 +69,6 @@ export class AuthService {
     return !!(localStorage.getItem('accessToken'));
   }
 
-  // TODO: implement
   // TODO: test
   refresh(): Observable<any> {
     return from(firebase.auth().currentUser.getIdToken(true));
