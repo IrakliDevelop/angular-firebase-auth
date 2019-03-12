@@ -29,7 +29,7 @@ export class AuthService {
         res => {
           this.router.navigate(['home']);
           this.getCurrentUserToken();
-          this.refresh();
+          this.getRefreshToken();
         },
         error => console.log
       );
