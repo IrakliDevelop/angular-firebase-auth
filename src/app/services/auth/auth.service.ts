@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { JWT_OPTIONS, JwtInterceptor, JwtModule, JwtHelperService } from '@auth0/angular-jwt';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class AuthService {
         res => {
           this.router.navigate(['home']);
           this.getCurrentUserToken();
-          this.refresh();
+          this.getRefreshToken();
         },
         error => console.log
       );
@@ -39,6 +40,7 @@ export class AuthService {
       console.log(res);
     }, error => console.log(error));
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   }
 
   getCurrentUserToken() {
@@ -46,9 +48,17 @@ export class AuthService {
       .then(
         (token: string) => {
           localStorage.setItem('accessToken', token);
+          return token;
         }
       );
     localStorage.getItem('accessToken');
+  }
+
+  getRefreshToken() {
+    if (!!localStorage.getItem('refreshToken')) {
+      localStorage.setItem('refreshToken', firebase.auth().currentUser.refreshToken);
+    }
+    localStorage.getItem('refreshToken');
   }
 
   isAuthenticated() {
@@ -57,10 +67,7 @@ export class AuthService {
 
   // TODO: implement
   refresh() {
-    if (this.isAuthenticated()) {
-      if (this.helper.getTokenExpirationDate().getMilliseconds() <= (new Date()).getMilliseconds() + 300000 /* 5 minutes*/) {
-        this.getCurrentUserToken();
-      }
-    }
+    this.getCurrentUserToken();
+    this.getRefreshToken();
   }
 }
