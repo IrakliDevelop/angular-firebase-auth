@@ -40,6 +40,7 @@ export class AuthService {
       console.log(res);
     }, error => console.log(error));
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   }
 
   getCurrentUserToken() {
@@ -50,8 +51,14 @@ export class AuthService {
           return token;
         }
       );
-    localStorage.setItem('refreshToken', firebase.auth().currentUser.refreshToken);
     localStorage.getItem('accessToken');
+  }
+
+  getRefreshToken() {
+    if (!!localStorage.getItem('refreshToken')) {
+      localStorage.setItem('refreshToken', firebase.auth().currentUser.refreshToken);
+    }
+    localStorage.getItem('refreshToken');
   }
 
   isAuthenticated() {
@@ -61,5 +68,6 @@ export class AuthService {
   // TODO: implement
   refresh() {
     this.getCurrentUserToken();
+    this.getRefreshToken();
   }
 }

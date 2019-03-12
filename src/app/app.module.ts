@@ -12,7 +12,7 @@ import { SignIngComponent } from './auth/sign-ing/sign-ing.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth/auth.service';
 import { AuthGuard } from './guards/auth/auth.guard';
-// import { RefreshTokenInterceptor } from './refresh-token-interceptor';
+import { RefreshTokenInterceptor } from './refresh-token-interceptor';
 
 function jwtOptionsFactory(authService: AuthService) {
   return {
@@ -41,7 +41,13 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    JwtModule.forRoot({})
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+        deps: [AuthService]
+      }
+    })
   ],
   providers: [AuthService,
               AuthGuard,
@@ -49,6 +55,11 @@ const appRoutes: Routes = [
               {
                 provide: HTTP_INTERCEPTORS,
                 useExisting: JwtInterceptor,
+                multi: true
+              },
+              {
+                provide: HTTP_INTERCEPTORS,
+                useClass: RefreshTokenInterceptor,
                 multi: true
               },
               JwtHelperService],
