@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { JWT_OPTIONS, JwtInterceptor, JwtModule, JwtHelperService } from '@auth0/angular-jwt';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +47,10 @@ export class AuthService {
       .then(
         (token: string) => {
           localStorage.setItem('accessToken', token);
+          return token;
         }
       );
+    localStorage.setItem('refreshToken', firebase.auth().currentUser.refreshToken);
     localStorage.getItem('accessToken');
   }
 
@@ -57,10 +60,6 @@ export class AuthService {
 
   // TODO: implement
   refresh() {
-    if (this.isAuthenticated()) {
-      if (this.helper.getTokenExpirationDate().getMilliseconds() <= (new Date()).getMilliseconds() + 300000 /* 5 minutes*/) {
-        this.getCurrentUserToken();
-      }
-    }
+    this.getCurrentUserToken();
   }
 }
