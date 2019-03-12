@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { JWT_OPTIONS, JwtInterceptor, JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,10 @@ export class AuthService {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(
         res => {
-          this.router.navigate(['home']);
+          this.router.navigate(['home']).then((response) => {
+            console.log(response);
+          },
+            error => console.error(error));
           this.getCurrentUserToken();
           this.getRefreshToken();
         },
@@ -66,8 +70,14 @@ export class AuthService {
   }
 
   // TODO: implement
-  refresh() {
-    this.getCurrentUserToken();
-    this.getRefreshToken();
+  // TODO: test
+  refresh(): Observable<any> {
+    return new Observable(observer => {
+      firebase.auth().currentUser.getIdToken(true).then(
+        (token: string) => {
+          localStorage.setItem('accessToken', token);
+        }
+      );
+    });
   }
 }
