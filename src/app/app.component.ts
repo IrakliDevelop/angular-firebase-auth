@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(credentials);
     firebase.initializeApp(credentials);
   }
 
@@ -31,4 +30,5 @@ export class AppComponent implements OnInit {
   isLoggedIn() {
     return localStorage.getItem('accessToken');
   }
+
 }

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
@@ -30,9 +31,10 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({})
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, JwtHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

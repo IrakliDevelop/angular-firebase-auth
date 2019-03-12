@@ -1,6 +1,7 @@
-import * as firebase from 'firebase';
-import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import * as firebase from 'firebase';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private helper: JwtHelperService,
   ) {
   }
 
@@ -26,6 +28,7 @@ export class AuthService {
         res => {
           this.router.navigate(['home']);
           this.getCurrentUserToken();
+          this.refresh();
         },
         error => console.log
       );
@@ -50,5 +53,14 @@ export class AuthService {
 
   isAuthenticated() {
     return !!(localStorage.getItem('accessToken'));
+  }
+
+  // TODO: implement
+  refresh() {
+    if (this.isAuthenticated()) {
+      if (this.helper.getTokenExpirationDate().getMilliseconds() <= (new Date()).getMilliseconds() + 300000 /* 5 minutes*/) {
+        this.getCurrentUserToken();
+      }
+    }
   }
 }
