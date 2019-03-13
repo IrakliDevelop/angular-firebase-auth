@@ -1,8 +1,9 @@
+// Todo: test interceptor
 import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { JwtInterceptor } from '@auth0/angular-jwt';
 
 @Injectable()
