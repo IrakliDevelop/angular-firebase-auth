@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { JWT_OPTIONS, JwtInterceptor, JwtModule, JwtHelperService } from '@auth0/angular-jwt';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { from, Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +10,6 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private helper: JwtHelperService,
   ) {
   }
 
@@ -69,7 +66,6 @@ export class AuthService {
     return !!(localStorage.getItem('accessToken'));
   }
 
-  // TODO: implement
   // TODO: test
   refresh(): Observable<any> {
     return from(firebase.auth().currentUser.getIdToken(true));
