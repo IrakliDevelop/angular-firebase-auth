@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-sign-ing',
@@ -13,10 +14,14 @@ export class SignIngComponent implements OnInit {
   signInForm: FormGroup;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['home']);
+    }
     this.signInForm = new FormGroup({
       email: new FormControl(null, Validators.required),
       pass: new FormControl(null, Validators.required),
