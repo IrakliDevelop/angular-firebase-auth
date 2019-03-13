@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { from, Observable } from 'rxjs';
+import { JwtHelperService} from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class AuthService {
 
   constructor(
     private router: Router,
+    private helper: JwtHelperService
   ) {
   }
 
@@ -21,7 +23,8 @@ export class AuthService {
         error => console.log);
   }
 
-  signIn(email: string, password: string) {
+  async signIn(email: string, password: string) {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(
         res => {
@@ -63,7 +66,14 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return !!(localStorage.getItem('accessToken'));
+    const token = localStorage.getItem('accessToken');
+    try {
+      const expirationDate = this.helper.getTokenExpirationDate(token);
+      return !!token && (expirationDate > (new Date()));
+    } catch (err) {
+      console.error('Token has not been set!!!');
+    }
+    return !!token;
   }
 
   // TODO: test
