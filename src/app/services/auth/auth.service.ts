@@ -28,12 +28,12 @@ export class AuthService {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(
         res => {
+          this.getCurrentUserToken();
+          this.getRefreshToken();
           this.router.navigate(['home']).then((response) => {
               console.log(response);
             },
             error => console.error(error));
-          this.getCurrentUserToken();
-          this.getRefreshToken();
         },
         (error) => console.log(error)
       );
@@ -59,8 +59,10 @@ export class AuthService {
   }
 
   getRefreshToken() {
-    if (!!localStorage.getItem('refreshToken')) {
-      localStorage.setItem('refreshToken', firebase.auth().currentUser.refreshToken);
+    console.log('getRefreshToken() called');
+    const refreshToken = firebase.auth().currentUser.refreshToken;
+    if (!localStorage.getItem('refreshToken')) {
+      localStorage.setItem('refreshToken', refreshToken);
     }
     localStorage.getItem('refreshToken');
   }
@@ -69,6 +71,7 @@ export class AuthService {
     const token = localStorage.getItem('accessToken');
     try {
       const expirationDate = this.helper.getTokenExpirationDate(token);
+      console.log(expirationDate);
       return !!token && (expirationDate > (new Date()));
     } catch (err) {
       console.error('Token has not been set!!!');
