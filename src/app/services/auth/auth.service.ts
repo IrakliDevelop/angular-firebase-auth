@@ -32,7 +32,7 @@ export class AuthService {
           this.getCurrentUserToken();
           this.getRefreshToken();
         },
-        error => console.log
+        (error) => console.log(error)
       );
   }
 
