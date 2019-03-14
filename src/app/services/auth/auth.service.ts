@@ -28,7 +28,7 @@ export class AuthService {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(
         res => {
-          this.getCurrentUserToken();
+          this.getCurrentUserToken(false);
           this.getRefreshToken();
           this.router.navigate(['home']).then((response) => {
               console.log(response);
@@ -47,8 +47,8 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
   }
 
-  getCurrentUserToken() {
-    firebase.auth().currentUser.getIdToken()
+  getCurrentUserToken(refresh: boolean) {
+    firebase.auth().currentUser.getIdToken(refresh)
       .then(
         (token: string) => {
           localStorage.setItem('accessToken', token);
@@ -71,7 +71,6 @@ export class AuthService {
     const token = localStorage.getItem('accessToken');
     try {
       const expirationDate = this.helper.getTokenExpirationDate(token);
-      console.log(expirationDate);
       return !!token && (expirationDate > (new Date()));
     } catch (err) {
       console.error('Token has not been set!!!');

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router} from '@angular/router';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,6 +22,10 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['home']);
+    }
+
+    if (!this.authService.isAuthenticated() && !!firebase.auth().currentUser) {
+      this.authService.getCurrentUserToken(true);
     }
     this.signInForm = new FormGroup({
       email: new FormControl(null, Validators.required),

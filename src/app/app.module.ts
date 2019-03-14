@@ -17,7 +17,7 @@ import { RefreshTokenInterceptor } from './helpers/refresh-token-interceptor';
 function jwtOptionsFactory(authService: AuthService) {
   return {
     tokenGetter: () => {
-      return authService.getCurrentUserToken();
+      return authService.getCurrentUserToken(false);
     },
     blacklistedRoutes: ['http://localhost:4300/sign-in']
   };
