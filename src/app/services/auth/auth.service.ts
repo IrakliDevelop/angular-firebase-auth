@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { from, Observable } from 'rxjs';
 import { JwtHelperService} from '@auth0/angular-jwt';
 
 @Injectable({
