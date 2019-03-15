@@ -21,6 +21,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     firebase.initializeApp(credentials);
+    // using timeout because firebase.auth().currentUser is not initialized on ngOnInit
+    // I know, it's not a good solution
+    // TODO: refactor this
+    setTimeout(() => {
+      this.authService.refresh();
+    }, 3000);
   }
 
   onLogout() {

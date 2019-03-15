@@ -47,7 +47,10 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
   }
 
-  getCurrentUserToken(refresh: boolean) {
+  async getCurrentUserToken(refresh: boolean) {
+    if (refresh) {
+      console.log('it\'s time to refresh ');
+    }
     firebase.auth().currentUser.getIdToken(refresh)
       .then(
         (token: string) => {
@@ -79,7 +82,12 @@ export class AuthService {
   }
 
   // TODO: test
-  refresh(): Observable<any> {
-    return from(firebase.auth().currentUser.getIdToken(true));
+  refresh() {
+    if (!this.isAuthenticated() && !!firebase.auth().currentUser) {
+      console.log('refresh');
+      this.getCurrentUserToken(true);
+    } else {
+      console.log('no actions needed');
+    }
   }
 }

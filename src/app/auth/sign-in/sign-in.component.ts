@@ -24,9 +24,9 @@ export class SigninComponent implements OnInit {
       this.router.navigate(['home']);
     }
 
-    if (!this.authService.isAuthenticated() && !!firebase.auth().currentUser) {
-      this.authService.getCurrentUserToken(true);
-    }
+    setTimeout(() => {
+      this.authService.refresh();
+    }, 3000);
     this.signInForm = new FormGroup({
       email: new FormControl(null, Validators.required),
       pass: new FormControl(null, Validators.required),
