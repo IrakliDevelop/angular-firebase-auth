@@ -8,7 +8,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
-import { SignIngComponent } from './auth/sign-ing/sign-ing.component';
+import { SigninComponent } from './auth/sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth/auth.service';
 import { AuthGuard } from './guards/auth/auth.guard';
@@ -17,7 +17,7 @@ import { RefreshTokenInterceptor } from './helpers/refresh-token-interceptor';
 function jwtOptionsFactory(authService: AuthService) {
   return {
     tokenGetter: () => {
-      return authService.getCurrentUserToken();
+      return authService.getCurrentUserToken(false);
     },
     blacklistedRoutes: ['http://localhost:4300/sign-in']
   };
@@ -25,7 +25,7 @@ function jwtOptionsFactory(authService: AuthService) {
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
-  { path: 'sign-in', component: SignIngComponent },
+  { path: 'sign-in', component: SigninComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }
 ];
@@ -34,7 +34,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     SignUpComponent,
-    SignIngComponent,
+    SigninComponent,
     HomeComponent
   ],
   imports: [

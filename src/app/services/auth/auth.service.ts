@@ -28,12 +28,12 @@ export class AuthService {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(
         res => {
+          this.getCurrentUserToken(false);
+          this.getRefreshToken();
           this.router.navigate(['home']).then((response) => {
               console.log(response);
             },
             error => console.error(error));
-          this.getCurrentUserToken();
-          this.getRefreshToken();
         },
         (error) => console.log(error)
       );
@@ -47,8 +47,11 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
   }
 
-  getCurrentUserToken() {
-    firebase.auth().currentUser.getIdToken()
+  async getCurrentUserToken(refresh: boolean) {
+    if (refresh) {
+      console.log('it\'s time to refresh ');
+    }
+    firebase.auth().currentUser.getIdToken(refresh)
       .then(
         (token: string) => {
           localStorage.setItem('accessToken', token);
@@ -59,8 +62,10 @@ export class AuthService {
   }
 
   getRefreshToken() {
-    if (!!localStorage.getItem('refreshToken')) {
-      localStorage.setItem('refreshToken', firebase.auth().currentUser.refreshToken);
+    console.log('getRefreshToken() called');
+    const refreshToken = firebase.auth().currentUser.refreshToken;
+    if (!localStorage.getItem('refreshToken')) {
+      localStorage.setItem('refreshToken', refreshToken);
     }
     localStorage.getItem('refreshToken');
   }
@@ -77,7 +82,12 @@ export class AuthService {
   }
 
   // TODO: test
-  refresh(): Observable<any> {
-    return from(firebase.auth().currentUser.getIdToken(true));
+  refresh() {
+    if (!this.isAuthenticated() && !!firebase.auth().currentUser) {
+      console.log('refresh');
+      this.getCurrentUserToken(true);
+    } else {
+      console.log('no actions needed');
+    }
   }
 }

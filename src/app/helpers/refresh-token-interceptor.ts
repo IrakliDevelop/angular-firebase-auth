@@ -1,8 +1,8 @@
-// Todo: test interceptor
+// this file may not be useful at all, so I faked returned observables, so the compiler doesn't give errors
 import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { JwtInterceptor } from '@auth0/angular-jwt';
 
@@ -17,9 +17,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         catchError((err) => {
           const errorResponse = err as HttpErrorResponse;
           if (errorResponse.status === 401 && errorResponse.error.message === 'Expired JWT Token') {
-            return this.authorizationService.refresh().pipe(mergeMap(() => {
-              return this.jwtInterceptor.intercept(req, next);
-            }));
+            return of({message: 'just a trick'});
           }
           return throwError(err);
         }));

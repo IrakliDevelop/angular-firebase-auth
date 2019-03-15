@@ -20,6 +20,7 @@
       140
     ],
     "member-access": false,
+    "no-console": false,
     "member-ordering": [
       true,
       {
